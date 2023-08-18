@@ -97,32 +97,82 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
         //
+
+        $products = Product::findorFail($id);
+        $categorys = Category::all();
+        $subCategorys = subCategory::all();
+        return view('cms.product.edit', compact('products', 'categorys', 'subCategorys'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
+
+        $category_id = $request->category_id;
+        $categoryName = Category::where('id', $category_id)->value('name');
+        $subCategory_id = $request->subCategory_id;
+        $subCategoryName = subCategory::where('id', $subCategory_id)->value('subCategoryName');
+        $prod = Product::findorFail($id);
+        $previousImg = $prod->img;
+
+        
+        $prod->name = $request->get('name');
+        $prod->shortDescr = $request->get('shortDescr');
+        $prod->longDescr = $request->get('longDescr');
+        $prod->price = $request->get('price');
+        $prod->count = $request->get('quantity');
+        $prod->slug = strtolower(str_replace(' ', '-', $request->name));
+        $prod->category_id = $category_id;
+        $prod->categoryName = $categoryName;
+        $prod->subCategory_id = $subCategory_id;
+        $prod->subCategoryName = $subCategoryName;
+        $prod->img = $previousImg;
+        $isSaved = $prod->save();
+
+        session()->flash('message', $isSaved ? 'Product Updated successfully ' : 'Failed to Updated Product');
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $products = Product::findorFail($id);
+        $isDeleted =  $products->delete();
+        session()->flash('message', $isDeleted ? 'Product Deleted successfully' : 'Product doesnt deleted');
+        return redirect()->back();
     }
 
 
 
     public function EditProductImg($id)
     {
-        $products= Product::findorFail($id);
-        return response()->view('cms.product.editImg',compact('products'));
+        $products = Product::findorFail($id);
+        return response()->view('cms.product.editImg', compact('products'));
+    }
+
+    public function updateImgProduct(Request $request, $id)
+    {
+        $request->validate([
+            'img' => 'required'
+        ]);
+        $id = $request->id;
+        $image = $request->file('img');
+        $img_name = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+        $request->img->move(public_path('upload'), $img_name);
+        $img_url = 'upload/' . $img_name;
+
+        $isUpdated = Product::findorFail($id)->update([
+            'img' => $img_url
+        ]);
+
+        session()->flash('message', $isUpdated ? 'I Image Updated successfully ' : 'Failed to create Product');
+        return redirect()->back();
     }
 }

@@ -36,11 +36,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth')->group(function () {
-    Route::resource('category',CategoryController::class);
+    Route::resource('category', CategoryController::class);
     Route::resource('product', ProductController::class);
     Route::resource('order', OrderController::class);
     Route::resource('subCategory', SubCategoryController::class);
-    Route::get('edit-product-img/{id}',[ProductController::class,'EditProductImg'])->name('editProductImg');
+    Route::get('edit-product-img/{id}', [ProductController::class, 'EditProductImg'])->name('editProductImg');
+    Route::put('edit-product-img/{id}', [ProductController::class, 'updateImgProduct'])->name('updateImgProduct');
 });
 
 require __DIR__ . '/auth.php';

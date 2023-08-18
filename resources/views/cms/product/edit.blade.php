@@ -65,8 +65,7 @@
                     <textarea class="form-control   @error('longDescr')is-invalid
                     
                     @enderror"
-                        value="{{ $products->longDescr }}" rows="3" name="longDescr" id="longDescr"
-                        placeholder="Enter Long Description"></textarea>
+                        rows="3" name="longDescr" id="longDescr" placeholder="Enter Long Description">{{ $products->longDescr }}</textarea>
                     @error('longDescr')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror

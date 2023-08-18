@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubCategoryController;
+use App\Models\Category;
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +35,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::resource('category',CategoryController::class);
+    Route::resource('product', ProductController::class);
+    Route::resource('order', OrderController::class);
+    Route::resource('subCategory', SubCategoryController::class);
+    Route::get('edit-product-img/{id}',[ProductController::class,'EditProductImg'])->name('editProductImg');
+});
+
+require __DIR__ . '/auth.php';

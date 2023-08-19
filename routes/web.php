@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Clientcntroller;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -22,8 +24,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
 });
+
+// Route::prefix('home')->group(function () {
+Route::get('/', [HomeController::class, 'index']);
+Route::resource('home', HomeController::class);
+// });
+
+Route::controller(Clientcntroller::class)->group(function () {
+    Route::get('category', 'categoryPage')->name('category');
+    Route::get('single-product', 'singleProduct')->name('singleProduct');
+    Route::get('add-to-cart', 'AddCart')->name('addCart');
+    Route::get('checkout', 'checkout')->name('checkout');
+    Route::get('user-profile', 'userProfile')->name('userProfile');
+
+    Route::get('new-release', 'newRelease')->name('newRelease');
+    Route::get('todays-deal', 'todayDeal')->name('todayDeal');
+    Route::get('costumer-service', 'costumerService')->name('costumerService');
+});
+
+
+
 
 Route::get('/dashboard', function () {
     return view('index');

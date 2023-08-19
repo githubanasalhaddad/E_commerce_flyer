@@ -27,8 +27,11 @@ Route::get('/', function () {
 });
 
 // Route::prefix('home')->group(function () {
-Route::get('/', [HomeController::class, 'index']);
-Route::resource('home', HomeController::class);
+    Route::controller(HomeController::class)->group(function(){
+        Route::get('/', 'index');
+    });
+
+
 // });
 
 Route::controller(Clientcntroller::class)->group(function () {

@@ -13,7 +13,8 @@ class OrderController extends Controller
     public function index()
     {
         //
-        return response()->view('cms.order.pendingorder');
+        $pending_orders= Order::where('status','pending')->latest()->get();
+        return response()->view('cms.order.pendingorder',compact('pending_orders'));
     }
 
     /**

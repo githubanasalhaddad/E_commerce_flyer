@@ -12,7 +12,7 @@
                     <div class="custom_menu">
                         <ul>
                             <li><a href="#">Best Sellers</a></li>
-                            <li><a href="{{ route('category') }}">Gift Ideas</a></li>
+                            <li><a href="">Gift Ideas</a></li>
                             <li><a href="{{ route('newRelease') }}">New Releases</a></li>
                             <li><a href="{{ route('todayDeal') }}">Today's Deals</a></li>
                             <li><a href="{{ route('costumerService') }}">Customer Service</a></li>
@@ -40,12 +40,12 @@
 
 
 
-                                <a href="index.html">Home</a>
+                                <a href="{{route('allCategory')}}">Home</a>
 
 
 
                                 @foreach ($categorys as $category)
-                                    <a href="fashion.html">{{ $category->name }}</a>
+                                    <a href="{{route('category',[$category->id,$category->slug])}}">{{ $category->name }}</a>
                                 @endforeach
 
 
@@ -61,7 +61,7 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                     @foreach ($categorys as $category)
-                                        <a class="dropdown-item" href="#">{{ $category->name }}</a>
+                                        <a class="dropdown-item" href="{{route('category',[$category->id,$category->slug])}}">{{ $category->name }}</a>
                                     @endforeach
                                     {{-- <a class="dropdown-item" href="#">Action</a>
                                     <a class="dropdown-item" href="#">Another action</a>

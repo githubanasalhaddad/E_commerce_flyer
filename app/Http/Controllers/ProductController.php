@@ -76,12 +76,11 @@ class ProductController extends Controller
         $product->subCategoryName = $subCategoryName;
         $product->img = $img_url;
         // $product->img = 'tttt';
-        $isSaved = $product->save();
-
-
+        
 
         Category::where('id', $category_id)->increment('subCategoryCount', 1);
         subCategory::where('id', $subCategory_id)->increment('product_count', 1);
+        $isSaved = $product->save();
         session()->flash('message', $isSaved ? 'Product created successfully ' : 'Failed to create Product');
         return redirect()->back();
     }

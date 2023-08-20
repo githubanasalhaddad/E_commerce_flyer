@@ -18,14 +18,26 @@
                                             <div class="tshirt_img"><img src="{{ asset($allProduct->img) }}">
                                             </div>
                                             <div class="btn_main">
-                                                <div class="buy_bt"><a href="#">Buy Now</a></div>
-                                                <div class="seemore_bt"><a href="#">See More</a></div>
+                                                <form action="{{ route('addProductToCart') }}" method="post">
+                                                    @csrf
+                                                    <input type="hidden" name="ProductId" id="" value="{{ $allProduct->id }}">
+                                                    <input type="hidden" name="price" id="" value="{{ $allProduct->price }}">
+                                                    <input type="hidden" name="quntity" id="" value="1">
+                                                    <input type="submit" class="buy_bt btn-success" value="Buy New" name="AddToCart" id="AddToCart">
+                                                </form>
+
+                                            
+                                                <div class="seemore_bt"><a href="{{route('singleProduct',[$allProduct->id,$allProduct->slug])}}">See More</a></div>
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
 
-
+                              
+                                   
+                                    {{-- <div class="btn btn-warning"><a href="#">Add to cart</a></div> --}}
+                
+                            
 
 
                             </div>

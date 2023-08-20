@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ShippingInfo;
 use Illuminate\Http\Request;
@@ -76,7 +77,8 @@ class Clientcntroller extends Controller
         return redirect()->back();
     }
 
-    public function shippingAddress(){
+    public function shippingAddress()
+    {
         return view('home.homeLayouts.shippingAddress');
     }
 
@@ -93,18 +95,57 @@ class Clientcntroller extends Controller
         $shippingAddress->postal_code = $request->postal_code;
         $shippingAddress->city_name = $request->city_name;
         $shippingAddress->phone_number = $request->phone_number;
-        $shippingAddress->user_id=Auth::id();
+        $shippingAddress->user_id = Auth::id();
         $isSaved = $shippingAddress->save();
-        return redirect()->route('checkout')->with('massage','Shipping Address created successfully');
+        return redirect()->route('checkout')->with('massage', 'Shipping Address created successfully');
+    }
 
 
+
+    public function checkout()
+    {
+        $user_id  = Auth::id();
+        $cart_item = Cart::where('user_id', $user_id)->get();
+        $shipping_address = ShippingInfo::where('user_id', $user_id)->first();
+        return response()->view('home.homeLayouts.checkout', compact('cart_item', 'shipping_address'));
+    }
+
+
+
+    public function PlaceOrder()
+    {
+
+        $user_id = Auth::id();
+        $cart_item = Cart::where('user_id', $user_id)->get();
+        $shipping_address = ShippingInfo::where('user_id', $user_id)->first();
+
+        foreach ($cart_item as $item) {
+            Order::insert([
+                'user_id' => $user_id,
+                'shipping_phoneNumber' => $shipping_address->phone_number,
+                'shipping_city' => $shipping_address->city_name,
+                'shipping_postcode' => $shipping_address->postal_code,
+                'product_id' => $item->id,
+                'total_price' => $item->price,
+                'quantity' => $item->quantity,
+
+            ]);
+
+            $id = $item->id;
+            Cart::findorFail($id)->delete();
+        }
+
+        return redirect()->route('pendingOrder')->with('massage', 'Your Order Has Been Placed ');
     }
 
     
 
-    public function checkout()
+
+    public function pendingOrder()
+
     {
-        return response()->view('home.homeLayouts.checkout');
+        $pending_orders= Order::where('status','pending')->latest()->get();
+        return response()->view('home.homeLayouts.pendingOrder',compact('pending_orders'));
     }
 
     public function userProfile()

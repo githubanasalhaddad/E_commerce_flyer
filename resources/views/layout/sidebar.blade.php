@@ -133,13 +133,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="pages/UI/general.html" class="nav-link">
+                            <a href="{{route('order.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Pending Orders</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/UI/icons.html" class="nav-link">
+                            <a href="{{route('order.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Completed Orders</p>
                             </a>

@@ -57,8 +57,10 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('DeleteProductFromCart/{id}','deleteProductFromCart')->name('deleteProductFromCart');
         Route::get('shipping-address', 'ShippingAddress')->name('shippingAddress');
         Route::post('Add-shipping-address', 'AddShippingAddress')->name('AddShippingAddress');
+        Route::post('place-order', 'PlaceOrder')->name('placeOrder');
         Route::post('add-product-to-cart','AddProductToCart')->name('addProductToCart');
         Route::get('checkout', 'checkout')->name('checkout');
+        Route::get('user-order-pending', 'pendingOrder')->name('pendingOrder');
         Route::get('user-profile', 'userProfile')->name('userProfile');
         Route::get('new-release', 'newRelease')->name('newRelease');
         Route::get('todays-deal', 'todayDeal')->name('todayDeal');

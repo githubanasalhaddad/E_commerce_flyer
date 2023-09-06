@@ -36,7 +36,6 @@ class Clientcntroller extends Controller
     public function singleProduct($id)
     {
         $products = Product::findorFail($id);
-
         $subCategoryId = Product::where('id',  $id)->value('subCategory_id');
         $Relatedproducts = Product::where('subCategory_id', $subCategoryId)->latest()->get();
 
@@ -45,6 +44,7 @@ class Clientcntroller extends Controller
 
     public function AddCart()
     {
+
         $userId = Auth::id();
         $cart_item = Cart::where('user_id', $userId)->get();
         return response()->view('home.homeLayouts.addToCart', compact('cart_item'));
@@ -52,6 +52,10 @@ class Clientcntroller extends Controller
 
     public function addProductToCart(Request $request)
     {
+        Validator::make($request->all(), [
+            'quntity' => 'required',
+        ])->validate();
+
         $product_price = $request->price;
         // return   $product_price;
         $quntity = $request->quntity;
@@ -138,14 +142,14 @@ class Clientcntroller extends Controller
         return redirect()->route('pendingOrder')->with('massage', 'Your Order Has Been Placed ');
     }
 
-    
+
 
 
     public function pendingOrder()
 
     {
-        $pending_orders= Order::where('status','pending')->latest()->get();
-        return response()->view('home.homeLayouts.pendingOrder',compact('pending_orders'));
+        $pending_orders = Order::where('status', 'pending')->latest()->get();
+        return response()->view('home.homeLayouts.pendingOrder', compact('pending_orders'));
     }
 
     public function userProfile()

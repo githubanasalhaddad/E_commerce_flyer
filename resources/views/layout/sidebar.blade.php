@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="/" class="brand-link">
         <img src="{{ asset('cms/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Eflyer</span>
@@ -15,7 +15,7 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ auth()->user()->name }}</a>
+                <a href="{{ route('dashboard') }}" class="d-block">{{ auth()->user()->name }}</a>
             </div>
         </div>
 
@@ -55,7 +55,10 @@
                         <p>
                             Category
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">6</span>
+                            @php
+                                $categoreCount = App\Models\Category::count();
+                            @endphp
+                            <span class="badge badge-info right">{{ $categoreCount }}</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -68,6 +71,7 @@
                         <li class="nav-item">
                             <a href="{{ route('category.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
+
                                 <p>All Category</p>
                             </a>
                         </li>
@@ -81,7 +85,11 @@
                         <p>
                             Sub Category
                             <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right"></span>
+                            @php
+                                $productCount = App\Models\SubCategory::count();
+                            @endphp
+                            <span class="badge badge-info right">{{ $productCount }}</span>
+
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -106,6 +114,10 @@
                         <p>
                             Product
                             <i class="right fas fa-angle-left"></i>
+                            @php
+                                $productCount = App\Models\Product::count();
+                            @endphp
+                            <span class="badge badge-info right">{{ $productCount }}</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
@@ -129,17 +141,21 @@
                         <p>
                             Orders
                             <i class="fas fa-angle-left right"></i>
+                            @php
+                                $orderCount = App\Models\Order::count();
+                            @endphp
+                            <span class="badge badge-info right">{{ $orderCount }}</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{route('order.index')}}" class="nav-link">
+                            <a href="{{ route('order.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Pending Orders</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('order.index')}}" class="nav-link">
+                            <a href="{{ route('order.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Completed Orders</p>
                             </a>
@@ -157,35 +173,37 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
-                            Forms
+                            Setings
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="pages/forms/general.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>General Elements</p>
-                            </a>
+
+
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                {{-- <a href="{{ route('logout') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Logout</p>
+                                </a> --}}
+
+                                <x-dropdown-link class="nav-link" :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                    this.closest('form').submit();">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
+
                         </li>
                         <li class="nav-item">
-                            <a href="pages/forms/advanced.html" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Advanced Elements</p>
+                                <p>Profile</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="pages/forms/editors.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Editors</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages/forms/validation.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Validation</p>
-                            </a>
-                        </li>
+
                     </ul>
                 </li>
 

@@ -7,7 +7,8 @@
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="container">
-                        <h1 class="fashion_taital">{{ $category->name }} - Product Count ({{ $category->product_count }})
+
+                        <h1 class="fashion_taital">-  {{ $category->name }}  -
                         </h1>
                         <div class="fashion_section_2">
                             <div class="row">

@@ -32,11 +32,17 @@
                 <div class="btn_main">
                     <form action="{{ route('addProductToCart') }}" method="post">
                         @csrf
-                        <input type="hidden" name="price"  value="{{ $products->price }}">
+                        <input type="hidden" name="price" value="{{ $products->price }}">
                         <input type="hidden" name="ProductId" id="" value="{{ $products->id }}">
                         <input type="number" name="quntity" id="quantityProduct" min="1"
-                            placeholder="Enter the quantity">
-                    
+                            placeholder="Enter the quantity"
+                            class="@error('quantity')is-invalid
+                                
+                            @enderror">
+                        @error('quantity')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+
                         <input type="submit" class="btn btn-warning" value="Add To Cart" name="AddToCart" id="AddToCart">
                     </form>
                     {{-- <div class="btn btn-warning"><a href="#">Add to cart</a></div> --}}
@@ -66,7 +72,20 @@
                                             <div class="tshirt_img"><img src="{{ asset($Relatedproduct->img) }}">
                                             </div>
                                             <div class="btn_main">
-                                                <div class="buy_bt"><a href="#">Buy Now</a></div>
+                                                {{-- <div class="buy_bt"><a href="">Buy Now</a></div> --}}
+
+
+                                                <form action="{{ route('addProductToCart') }}" method="post">
+                                                    @csrf
+                                                    <input type="hidden" name="ProductId" id=""
+                                                        value="{{ $Relatedproduct->id }}">
+                                                    <input type="hidden" name="price" id=""
+                                                        value="{{ $Relatedproduct->price }}">
+                                                    <input type="hidden" name="quntity" id="" value="1">
+                                                    <input type="submit" class="buy_bt btn-success" value="Buy New"
+                                                        name="AddToCart" id="AddToCart">
+                                                </form>
+
                                                 <div class="seemore_bt"><a
                                                         href="{{ route('singleProduct', [$Relatedproduct->id, $Relatedproduct->slug]) }}">See
                                                         More</a></div>

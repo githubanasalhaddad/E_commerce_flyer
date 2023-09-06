@@ -10,6 +10,7 @@ use App\Http\Controllers\SubCategoryController;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\subCategory;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,8 +24,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-});
+// Route::get('/', function () {
+// });
 
 // Route::prefix('home')->group(function () {
 Route::controller(HomeController::class)->group(function () {
@@ -48,7 +49,7 @@ Route::controller(Clientcntroller::class)->group(function () {
     Route::get('new-release', 'newRelease')->name('newRelease');
     Route::get('todays-deal', 'todayDeal')->name('todayDeal');
     Route::get('costumer-service', 'costumerService')->name('costumerService');
-});
+})->middleware('check_user');
 
 Route::middleware(['auth'])->group(function () {
     Route::controller(Clientcntroller::class)->group(function () {
@@ -70,8 +71,12 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::get('/dashboard', function () {
-    return view('index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    $productCount= Product::count();
+    $categoryCount= Category::count();
+    $orderCount= Order::count();
+    $subCategoryCount= subCategory::count();
+    return view('index2',compact(['productCount','categoryCount','orderCount','subCategoryCount']));
+})->middleware(['auth', 'verified','check_user'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
